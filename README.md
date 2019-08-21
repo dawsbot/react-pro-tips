@@ -47,7 +47,7 @@ const HomePage = loadable({
 });
 ```
 
-In the beginning, I find it easiest to do this for only the biggest routes. Find the biggest routes with [webpack-bundle-analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer) or  [source-map-explorer](https://github.com/danvk/source-map-explore)
+In the beginning, I find it easiest to do this for only the biggest routes. Find the biggest routes with [webpack-bundle-analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer) or [source-map-explorer](https://github.com/danvk/source-map-explorer)
 
 #### Why?
 
