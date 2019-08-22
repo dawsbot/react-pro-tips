@@ -11,11 +11,20 @@
 
 ```jsx
 // Replace this
-<MyComponent onClick={value => this.setState({ value })}
+render() {
+  return (
+    <MyComponent onClick={value => this.setState({ value })} />
+  );
+}
 
 // With this
-const handleClick = value => this.setState({ value });
-<MyComponent onClick={this.handleClick} />
+handleClick = value => this.setState({ value });
+
+render() {
+  return (
+    <MyComponent onClick={this.handleClick} />
+  )
+}
 ```
 
 #### Why?
@@ -54,6 +63,49 @@ In the beginning, I find it easiest to do this for only the biggest routes. Find
 Page load speeds are directly correlated with revenue, retention, etc.
 
 [Read more here](https://css-tricks.com/using-react-loadable-for-code-splitting-by-components-and-routes/)
+
+<br />
+
+## Access props and state from `this` whenever possible
+
+When a class calls a helper function that's also in that class, do not pass `props` nor `state` into that helper function. We should desctructure from `this` at the top of the helper function instead.
+
+```jsx
+// Replace this
+handleClick = (isError) => {
+  isError ? doThing('red') : doThing('green')
+}
+
+render() {
+  const {isError} = this.props;
+  return (
+    <div onClick={() => this.handleClick(isError)>
+        Click me
+    </div>
+  );
+}
+```
+
+```jsx
+// With this
+handleClick = () => {
+  this.props.isError ? doThing('red') : doThing('green')
+}
+
+render() {
+  return (
+    <div onClick={this.handleClick}>
+        Click me
+    </div>
+  );
+}
+```
+
+#### Why?
+
+Providing unecessary props creates performance issues. In the example above, we were able to avoid an inline function because of the refactor 👏
+
+In addition, there is type safety lost when a function receives a prop. This can be fixed if you manually type the function which receives this prop, but that's unecessary code bloat, which rots over time (tested in TypeScript).
 
 <br />
 
