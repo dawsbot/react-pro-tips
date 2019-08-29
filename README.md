@@ -7,7 +7,7 @@
 
 # Performance
 
-## Avoid inline functions in props
+## Avoid inline functions in render
 
 ```jsx
 // Replace this
@@ -35,34 +35,24 @@ Having a function inline **creates a diff in props every time the parent is rend
 
 <br />
 
-## Split-up your bundle
+## Define constants outside of jsx
 
-If you're using create-react-app or a similar tool, your **entire JavaScript bundle is delivered on the first page load**. 
-
-You can cut this in half or more by adding in a package like [https://github.com/jamiebuilds/react-loadable](https://github.com/jamiebuilds/react-loadable)
+> This includes objects, arrays, React components, and (as we've already mentioned above) functions
 
 ```jsx
-// Replace this
-import HomePage from './pages/HomePage';
-
-// With this
-import loadable from 'react-loadable';
-const HomePage = loadable({
-  loader: () =>
-    import(
-      /* webpackChunkName: "route-home-page" */ './pages/HomePage'
-    ),
-  loading,
-});
+// replace this
+const RedDiv = () => <div style={{color: 'red'}}/>
 ```
 
-In the beginning, I find it easiest to do this for only the biggest routes. Find the biggest routes with [webpack-bundle-analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer) or [source-map-explorer](https://github.com/danvk/source-map-explorer)
+```jsx
+// with this
+const redStyle = {color: 'red'}
+const RedDiv = () => <div style={redStyle}/>
+```
 
 #### Why?
 
-Page load speeds are directly correlated with revenue, retention, etc.
-
-[Read more here](https://css-tricks.com/using-react-loadable-for-code-splitting-by-components-and-routes/)
+Creating a new array, object, or functions within jsx creates a diff when there is none. If this is high in your component tree, you can create a slow application with UI jank.
 
 <br />
 
@@ -109,11 +99,42 @@ In addition, there is type safety lost when a function receives a prop. This can
 
 <br />
 
+## Split-up your bundle
+
+If you're using create-react-app or a similar tool, your **entire JavaScript bundle is delivered on the first page load**. 
+
+You can cut this in half or more by adding in a package like [https://github.com/jamiebuilds/react-loadable](https://github.com/jamiebuilds/react-loadable)
+
+```jsx
+// Replace this
+import HomePage from './pages/HomePage';
+
+// With this
+import loadable from 'react-loadable';
+const HomePage = loadable({
+  loader: () =>
+    import(
+      /* webpackChunkName: "route-home-page" */ './pages/HomePage'
+    ),
+  loading,
+});
+```
+
+In the beginning, I find it easiest to do this for only the biggest routes. Find the biggest routes with [webpack-bundle-analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer) or [source-map-explorer](https://github.com/danvk/source-map-explorer)
+
+#### Why?
+
+Page load speeds are directly correlated with revenue, retention, etc.
+
+[Read more here](https://css-tricks.com/using-react-loadable-for-code-splitting-by-components-and-routes/)
+
+<br />
+
 ---
 
 # Follow-ups
 
-If you would like consulting, you can learn more about my offerings at [DarkTriangle.tech](https://darktriangle.tech)
+If you would like consulting, contact us at [DarkTriangle.tech](https://darktriangle.tech)
 
 <p align="center">
   <img src="https://avatars2.githubusercontent.com/u/49670561" width="400"/>
