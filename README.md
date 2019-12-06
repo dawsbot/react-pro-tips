@@ -67,9 +67,8 @@ handleClick = (isError) => {
 }
 
 render() {
-  const {isError} = this.props;
   return (
-    <div onClick={() => this.handleClick(isError)>
+    <div onClick={() => this.handleClick(this.props.isError)>
         Click me
     </div>
   );
@@ -95,7 +94,7 @@ render() {
 
 Providing unecessary props creates performance issues. In the example above, we were able to avoid an inline function because of the refactor 👏
 
-In addition, there is type safety lost when a function receives a prop. This can be fixed if you manually type the function which receives this prop, but that's unecessary code bloat, which rots over time (tested in TypeScript).
+In addition, there is type safety lost when a function receives a prop (Typescript and Flowtype). This can be fixed if you manually type the function which receives this prop, but that's unecessary code bloat, which rots over time.
 
 <br />
 
@@ -121,6 +120,8 @@ const HomePage = loadable({
 ```
 
 In the beginning, I find it easiest to do this for only the biggest routes. Find the biggest routes with [webpack-bundle-analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer) or [source-map-explorer](https://github.com/danvk/source-map-explorer)
+
+The "`webpackChunkName`" comment creates a named chunk. Without it, your buils has tens of files like `29.fda76583.chunk.js`. With this comment, you'll instead get `route-home-page.fda76583.chunk.js` 🙌
 
 #### Why?
 
